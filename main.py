@@ -75,13 +75,16 @@ class Plaquette:
                 self.rect.centerx = self.rect.centerx + 1
 
 
-plaquette_down = Plaquette("Plaquette.jpg", 580, 640, "bas")
+plaquette_down = Plaquette("Plaquette.jpg", 580, 670, "bas")
+plaquette_up = Plaquette("Plaquette.jpg", 580, 90, "haut")
 
 while True:
     time.sleep(0.001)
     get_input()
     plaquette_down.move(events)
+    plaquette_up.move(events)
     screen.fill((255, 255, 255))
     plaquette_down.blit()
+    plaquette_up.blit()
     pygame.display.flip()
                 
