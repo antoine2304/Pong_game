@@ -7,6 +7,7 @@ screen = pygame.display.set_mode((960, 760))
 pygame.display.set_caption('Pong')
 
 events = [False, False, False, False, False]
+#just testing more
 #z, x, left, right
 
 
