@@ -46,14 +46,31 @@ def get_input():
 
 
 class Plaquette:
-
-    def __init__(self, image):
+    
+    def __init__(self, image, x, y, hautoubas):
         self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
         self.s_rect = screen.get_rect()
         self.screen = screen
-
-
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.position = hautoubas
 
     def blit(self):
         self.screen.blit(self.image, self.rect)
+
+    def move(userinput):
+        if hautoubas == "haut":
+            if userinput[0]:
+                self.rect.centerx = self.rect.centerx - 1
+
+            if userinput[1]:
+                self.rect.centerx = self.rect.centerx + 1
+
+         if hautoubas == "bas":
+            if userinput[2]:
+                self.rect.centerx = self.rect.centerx - 1
+
+            if userinput[3]:
+                self.rect.centerx = self.rect.centerx + 1
+                
