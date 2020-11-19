@@ -59,7 +59,7 @@ class Plaquette:
     def blit(self):
         self.screen.blit(self.image, self.rect)
 
-    def move(userinput):
+    def move(self, userinput):
         if hautoubas == "haut":
             if userinput[0]:
                 self.rect.centerx = self.rect.centerx - 1
