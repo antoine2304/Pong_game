@@ -6,7 +6,8 @@ pygame.init()
 screen = pygame.display.set_mode((960, 760))
 pygame.display.set_caption('Pong')
 
-events = [False, False, False, False, False] #z, x, left, right
+events = [False, False, False, False, False]
+#z, x, left, right
 
 
 def get_input():
@@ -87,4 +88,5 @@ while True:
     plaquette_down.blit()
     plaquette_up.blit()
     pygame.display.flip()
-                
+
+
