@@ -2,6 +2,7 @@ import pygame
 import sys
 import time
 import random
+import math
 
 pygame.init()
 screen = pygame.display.set_mode((760, 900))
@@ -12,9 +13,9 @@ events = [False, False, False, False, False] #z, x, left, right
 #parametres
 vitesse_plaquette = 12.5
 vitesse_ball = 1
-acceleration_ball = 0.1
+acceleration_ball = 0.5
 fps = 1/60
-initial_time = pygame.time
+initial_time = time.time()
 
 
 def get_input():
@@ -61,13 +62,18 @@ class Ball:
         self.screen = screen
         self.rect.centery = 0.5*self.screen.get_height()
         self.rect.centerx = random.randint(self.s_rect.left + self.image.get_height(), self.s_rect.right -self.image.get_height())
-        self.angle = random.randint(0, 360)
+        self.angle = random.randint(0, 360) #pointé vers le droite sens anti-horaire
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
 
     def blit(self):
         self.screen.blit(self.image, self.rect)
 
     def move(self):
-        
+        self.x += math.cos((self.angle/180)*math.pi) * (vitesse_ball + acceleration_ball * (time.time() - initial_time))
+        self.y -= math.sin((self.angle/180)*math.pi) * (vitesse_ball + acceleration_ball * (time.time() - initial_time))
+        self.rect.centerx = self.x
+        self.rect.centery = self.y
 
 
 class Plaquette:
@@ -109,14 +115,17 @@ class Plaquette:
 
 plaquette_down = Plaquette("Plaquette.jpg", 580, 810, "bas")
 plaquette_up = Plaquette("Plaquette.jpg", 580, 90, "haut")
+ball = Ball("Balle.jpg")
 
 while True:
     time.sleep(fps)
     get_input()
     plaquette_down.move(events)
     plaquette_up.move(events)
+    ball.move()
     screen.fill((255, 255, 255))
     plaquette_down.blit()
     plaquette_up.blit()
+    ball.blit()
     pygame.display.flip()
              
