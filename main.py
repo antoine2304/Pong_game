@@ -77,19 +77,19 @@ class Ball:
         self.rect.centery = self.y
 
     def checkwall(self):
-        if self.rect.left < self.s_rect.left and 0 <= self.angle < 90: #frappe le mur gauche venant du haut
+        if self.rect.left < self.s_rect.left and 180 <= self.angle < 270: #frappe le mur gauche venant du haut
             self.rect.left = self.s_rect.left
             self.angle = self.angle - 2*abs(self.angle) - 180
 
-        elif self.rect.left < self.s_rect.left and 90 <= self.angle < 180: #frappe le mur gauche venant du bas
+        elif self.rect.left < self.s_rect.left and 270 <= self.angle < 360: #frappe le mur gauche venant du bas
             self.rect.left = self.s_rect.left
             self.angle = self.angle + 2*abs(self.angle) + 180
 
-        elif self.rect.right > self.s_rect.right and 180 <= self.angle < 270: #frappe le mur droit venant du bas
+        elif self.rect.right > self.s_rect.right and 0 <= self.angle < 90: #frappe le mur droit venant du bas
             self.rect.right = self.s_rect.right
             self.angle = self.angle - 2*abs(self.angle) - 180
 
-        elif self.rect.right > self.s_rect.right and 270 <= self.angle < 360: #frappe le mur droit venant du haut
+        elif self.rect.right > self.s_rect.right and 90 <= self.angle < 180: #frappe le mur droit venant du haut
             self.rect.right = self.s_rect.right
             self.angle = self.angle + 2*abs(self.angle) + 180
 
