@@ -62,18 +62,36 @@ class Ball:
         self.screen = screen
         self.rect.centery = 0.5*self.screen.get_height()
         self.rect.centerx = random.randint(self.s_rect.left + self.image.get_height(), self.s_rect.right -self.image.get_height())
-        self.angle = random.randint(0, 360) #pointé vers le droite sens anti-horaire
+        self.angle = random.randint(0, 360) #pointé vers le haut sens horaire
         self.x = self.rect.centerx
         self.y = self.rect.centery
+        print(self.angle)
 
     def blit(self):
         self.screen.blit(self.image, self.rect)
 
     def move(self):
-        self.x += math.cos((self.angle/180)*math.pi) * (vitesse_ball + acceleration_ball * (time.time() - initial_time))
-        self.y -= math.sin((self.angle/180)*math.pi) * (vitesse_ball + acceleration_ball * (time.time() - initial_time))
+        self.x -= math.cos(((self.angle+90)/180)*math.pi) * (vitesse_ball + acceleration_ball * (time.time() - initial_time))
+        self.y -= math.sin(((self.angle+90)/180)*math.pi) * (vitesse_ball + acceleration_ball * (time.time() - initial_time))
         self.rect.centerx = self.x
         self.rect.centery = self.y
+
+    def checkwall(self):
+        if self.rect.left < self.s_rect.left and 0 <= self.angle < 90: #frappe le mur gauche venant du haut
+            self.rect.left = self.s_rect.left
+            self.angle = self.angle - 2*abs(self.angle) - 180
+
+        elif self.rect.left < self.s_rect.left and 90 <= self.angle < 180: #frappe le mur gauche venant du bas
+            self.rect.left = self.s_rect.left
+            self.angle = self.angle + 2*abs(self.angle) + 180
+
+        elif self.rect.right > self.s_rect.right and 180 <= self.angle < 270: #frappe le mur droit venant du bas
+            self.rect.right = self.s_rect.right
+            self.angle = self.angle - 2*abs(self.angle) - 180
+
+        elif self.rect.right > self.s_rect.right and 270 <= self.angle < 360: #frappe le mur droit venant du haut
+            self.rect.right = self.s_rect.right
+            self.angle = self.angle + 2*abs(self.angle) + 180
 
 
 class Plaquette:
@@ -123,9 +141,9 @@ while True:
     plaquette_down.move(events)
     plaquette_up.move(events)
     ball.move()
+    ball.checkwall()
     screen.fill((255, 255, 255))
     plaquette_down.blit()
     plaquette_up.blit()
     ball.blit()
     pygame.display.flip()
-             
