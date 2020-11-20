@@ -1,6 +1,7 @@
 import pygame
 import sys
 import time
+import random
 
 pygame.init()
 screen = pygame.display.set_mode((960, 760))
@@ -44,6 +45,17 @@ def get_input():
             if event.key == pygame.K_RIGHT:
                 events[3] = True
                 events[2] = False
+
+
+class Ball:
+    def __init__(self, image):
+        self.image = pygame.image.load(image)
+        self.rect = self.image.get_rect()
+        self.s_rect = screen.get_rect()
+        self.screen = screen
+        self.rect.centery = 0.5*self.screen.get_height()
+        self.rect.centerx = random.randint(self.s_rect.left + self.image.get_height(), self.s_rect.right -self.image.get_height())
+
 
 
 class Plaquette:
