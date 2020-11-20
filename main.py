@@ -10,8 +10,11 @@ pygame.display.set_caption('Pong')
 events = [False, False, False, False, False] #z, x, left, right
 
 #parametres
-vitesse = 12.5
+vitesse_plaquette = 12.5
+vitesse_ball = 1
+acceleration_ball = 0.1
 fps = 1/60
+initial_time = pygame.time
 
 
 def get_input():
@@ -58,7 +61,13 @@ class Ball:
         self.screen = screen
         self.rect.centery = 0.5*self.screen.get_height()
         self.rect.centerx = random.randint(self.s_rect.left + self.image.get_height(), self.s_rect.right -self.image.get_height())
+        self.angle = random.randint(0, 360)
 
+    def blit(self):
+        self.screen.blit(self.image, self.rect)
+
+    def move(self):
+        
 
 
 class Plaquette:
@@ -79,17 +88,17 @@ class Plaquette:
 
         if self.position == "haut":
             if userinput[0]:
-                self.rect.centerx = self.rect.centerx - vitesse
+                self.rect.centerx = self.rect.centerx - vitesse_plaquette
 
             if userinput[1]:
-                self.rect.centerx = self.rect.centerx + vitesse
+                self.rect.centerx = self.rect.centerx + vitesse_plaquette
 
         if self.position == "bas":
             if userinput[2]:
-                self.rect.centerx = self.rect.centerx - vitesse
+                self.rect.centerx = self.rect.centerx - vitesse_plaquette
 
             if userinput[3]:
-                self.rect.centerx = self.rect.centerx + vitesse
+                self.rect.centerx = self.rect.centerx + vitesse_plaquette
 
         if self.rect.left < self.s_rect.left:
             self.rect.left = self.s_rect.left
