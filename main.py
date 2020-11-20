@@ -4,11 +4,14 @@ import time
 import random
 
 pygame.init()
-screen = pygame.display.set_mode((960, 760))
+screen = pygame.display.set_mode((760, 900))
 pygame.display.set_caption('Pong')
 
-events = [False, False, False, False, False]
-#z, x, left, right
+events = [False, False, False, False, False] #z, x, left, right
+
+#parametres
+vitesse = 12.5
+fps = 1/60
 
 
 def get_input():
@@ -73,26 +76,33 @@ class Plaquette:
         self.screen.blit(self.image, self.rect)
 
     def move(self, userinput):
+
         if self.position == "haut":
             if userinput[0]:
-                self.rect.centerx = self.rect.centerx - 1
+                self.rect.centerx = self.rect.centerx - vitesse
 
             if userinput[1]:
-                self.rect.centerx = self.rect.centerx + 1
+                self.rect.centerx = self.rect.centerx + vitesse
 
         if self.position == "bas":
             if userinput[2]:
-                self.rect.centerx = self.rect.centerx - 1
+                self.rect.centerx = self.rect.centerx - vitesse
 
             if userinput[3]:
-                self.rect.centerx = self.rect.centerx + 1
+                self.rect.centerx = self.rect.centerx + vitesse
+
+        if self.rect.left < self.s_rect.left:
+            self.rect.left = self.s_rect.left
+
+        elif self.rect.right > self.s_rect.right:
+            self.rect.right = self.s_rect.right
 
 
-plaquette_down = Plaquette("Plaquette.jpg", 580, 670, "bas")
+plaquette_down = Plaquette("Plaquette.jpg", 580, 810, "bas")
 plaquette_up = Plaquette("Plaquette.jpg", 580, 90, "haut")
 
 while True:
-    time.sleep(0.001)
+    time.sleep(fps)
     get_input()
     plaquette_down.move(events)
     plaquette_up.move(events)
@@ -100,5 +110,4 @@ while True:
     plaquette_down.blit()
     plaquette_up.blit()
     pygame.display.flip()
-
-
+             
