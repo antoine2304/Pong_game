@@ -10,7 +10,7 @@ pygame.display.set_caption('Pong')
 
 events = [False, False, False, False, False] #z, x, left, right
 
-#parametres
+#parametres #test
 vitesse_plaquette = 12.5
 vitesse_ball = 1
 acceleration_ball = 0.5
