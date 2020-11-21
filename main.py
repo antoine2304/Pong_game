@@ -12,10 +12,11 @@ events = [False, False, False, False, False] #z, x, left, right
 
 #parametres #test
 vitesse_plaquette = 12.5
-vitesse_ball = 1
-acceleration_ball = 0.5
+vitesse_ball = 3
+acceleration_ball = 0
 fps = 1/60
 initial_time = time.time()
+angle_attaque = 0.02
 
 
 def get_input():
@@ -62,10 +63,9 @@ class Ball:
         self.screen = screen
         self.rect.centery = 0.5*self.screen.get_height()
         self.rect.centerx = random.randint(self.s_rect.left + self.image.get_height(), self.s_rect.right -self.image.get_height())
-        self.angle = random.randint(0, 360) #pointé vers le haut sens horaire
+        self.angle = 0 #pointé vers le haut sens horaire
         self.x = self.rect.centerx
         self.y = self.rect.centery
-        print(self.angle)
 
     def blit(self):
         self.screen.blit(self.image, self.rect)
@@ -92,6 +92,73 @@ class Ball:
         elif self.rect.right > self.s_rect.right and 90 <= self.angle < 180: #frappe le mur droit venant du haut
             self.rect.right = self.s_rect.right
             self.angle = self.angle + 2*abs(self.angle) + 180
+
+    def check_plaquette(self):
+        if (self.rect.top < plaquette_up.rect.bottom) and (abs(self.rect.centerx - plaquette_up.rect.centerx) < 41.5) and (self.rect.top > plaquette_up.rect.top):
+            distance = self.rect.centerx - plaquette_up.rect.centerx
+            print("ok")
+            denominateur = 2*angle_attaque*distance
+            if denominateur == 0:
+                angle_board = 0
+            else:
+                angle_board = math.atan(abs(denominateur)/3) * 180 / math.pi
+
+            if denominateur < 0:
+                angle_board = angle_board*-1
+
+            print(angle_board)
+
+            if self.angle > 270:
+                self.angle = 540 - self.angle - angle_board
+
+            elif self.angle < 90:
+                self.angle = 180 - self.angle - angle_board
+
+            if self.angle < 100:
+                self.angle = 100
+
+            elif self.angle > 260:
+                self.angle = 260
+
+            self.y = plaquette_up.rect.bottom + 5
+
+        elif (self.rect.bottom > plaquette_down.rect.top) and (abs(self.rect.centerx - plaquette_down.rect.centerx) < 41.5) and (
+                self.rect.bottom < plaquette_down.rect.bottom):
+            distance = self.rect.centerx - plaquette_down.rect.centerx
+            print("ok")
+            denominateur = 2 * -1 * angle_attaque * distance
+            if denominateur == 0:
+                angle_board = 0
+            else:
+                angle_board = math.atan(abs(denominateur) / 3) * 180 / math.pi
+
+            if denominateur < 0:
+                angle_board = angle_board * -1
+
+            print(angle_board)
+
+            if self.angle > 180:
+                self.angle = 540 - self.angle - angle_board
+
+            elif self.angle < 180:
+                self.angle = 180 - self.angle - angle_board
+
+            print(self.angle)
+
+            if self.angle >= 360:
+                self.angle -= 360
+
+            elif self.angle < 0:
+                self.angle = 360 + self.angle
+
+            if (self.angle > 80) and (self.angle <= 180):
+                self.angle = 80
+
+            elif (self.angle < 280) and (self.angle >= 90):
+                self.angle = 280
+
+            self.y = plaquette_down.rect.top - 5
+            print(self.angle)
 
 
 class Plaquette:
@@ -142,6 +209,7 @@ while True:
     plaquette_up.move(events)
     ball.move()
     ball.checkwall()
+    ball.check_plaquette()
     screen.fill((255, 255, 255))
     plaquette_down.blit()
     plaquette_up.blit()
