@@ -77,21 +77,21 @@ class Ball:
         self.rect.centery = self.y
 
     def checkwall(self):
-        if self.rect.left < self.s_rect.left and 180 <= self.angle < 270: #frappe le mur gauche venant du haut
+        if self.rect.left < self.s_rect.left and 180 < self.angle and self.angle < 270: #frappe le mur gauche venant du haut
             self.rect.left = self.s_rect.left
-            self.angle = self.angle - 2*abs(self.angle) - 180
+            self.angle = self.angle - 2*self.angle
 
-        elif self.rect.left < self.s_rect.left and 270 <= self.angle < 360: #frappe le mur gauche venant du bas
+        elif self.rect.left < self.s_rect.left and 270 < self.angle and self.angle < 360: #frappe le mur gauche venant du bas
             self.rect.left = self.s_rect.left
-            self.angle = self.angle + 2*abs(self.angle) + 180
+            self.angle = 360 - self.angle
 
-        elif self.rect.right > self.s_rect.right and 0 <= self.angle < 90: #frappe le mur droit venant du bas
+        elif self.rect.right > self.s_rect.right and 0 < self.angle and self.angle < 90: #frappe le mur droit venant du bas
             self.rect.right = self.s_rect.right
-            self.angle = self.angle - 2*abs(self.angle) - 180
+            self.angle = 360 - self.angle
 
-        elif self.rect.right > self.s_rect.right and 90 <= self.angle < 180: #frappe le mur droit venant du haut
+        elif self.rect.right > self.s_rect.right and 90 < self.angle and self.angle < 180: #frappe le mur droit venant du haut
             self.rect.right = self.s_rect.right
-            self.angle = self.angle + 2*abs(self.angle) + 180
+            self.angle = self.angle + 2*(180-self.angle)
 
     def check_plaquette(self):
         if (self.rect.top < plaquette_up.rect.bottom) and (abs(self.rect.centerx - plaquette_up.rect.centerx) < 41.5) and (self.rect.top > plaquette_up.rect.top):
