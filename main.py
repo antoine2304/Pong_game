@@ -18,6 +18,20 @@ fps = 1/60
 initial_time = time.time()
 angle_attaque = 0.02
 
+score_bottom = 0
+score_top = 0
+
+def resetall():
+    global initial_time
+
+    time.sleep(1)
+    ball.y = 0.5*ball.screen.get_height()
+    ball.x = 380
+    ball.angle = random.randint(0, 360)
+    plaquette_up.rect.centerx = 380
+    plaquette_down.rect.centerx = 380
+    initial_time = time.time()
+
 
 def get_input():
     for event in pygame.event.get():
@@ -92,6 +106,17 @@ class Ball:
         elif self.rect.right > self.s_rect.right and 90 < self.angle and self.angle < 180: #frappe le mur droit venant du haut
             self.rect.right = self.s_rect.right
             self.angle = self.angle + 2*(180-self.angle)
+            
+    def checkend (self):
+        global score_bottom
+        global score_top
+        
+        if self.rect.bottom > self.s_rect.bottom:
+            score_top += 1
+            resetall()
+        elif self.rect.top < self.s_rect.top:
+            score_bottom += 1
+            resetall()  
 
     def check_plaquette(self):
         if (self.rect.top < plaquette_up.rect.bottom) and (abs(self.rect.centerx - plaquette_up.rect.centerx) < 41.5) and (self.rect.top > plaquette_up.rect.top):
@@ -210,6 +235,7 @@ while True:
     ball.move()
     ball.checkwall()
     ball.check_plaquette()
+    ball.checkend
     screen.fill((255, 255, 255))
     plaquette_down.blit()
     plaquette_up.blit()
