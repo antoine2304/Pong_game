@@ -15,7 +15,6 @@ vitesse_plaquette = 12.5
 vitesse_ball = 3
 acceleration_ball = 0.3
 fps = 1/60
-initial_time = time.time()
 angle_attaque = 0.02
 
 score_bottom = 0
@@ -226,6 +225,11 @@ plaquette_up = Plaquette("Plaquette.jpg", 580, 90, "haut")
 ball = Ball("Balle.jpg")
 pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
+initial_time = time.time()
+pointiller_image = pygame.image.load("pointiller.jpg")
+pointiller_rect = pointiller_image.get_rect()
+pointiller_rect.centery = 450
+pointiller_rect.centerx = 380
 
 while True:
     time.sleep(fps)
@@ -237,6 +241,7 @@ while True:
     ball.check_plaquette()
     ball.checkend()
     screen.fill((255, 255, 255))
+    screen.blit(pointiller_image, pointiller_rect)
     plaquette_down.blit()
     plaquette_up.blit()
     ball.blit()
@@ -245,4 +250,3 @@ while True:
     screen.blit(up, (50, 400))
     screen.blit(down, (50, 500))
     pygame.display.flip()
-    print(ball.angle)
