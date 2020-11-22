@@ -13,7 +13,7 @@ events = [False, False, False, False, False] #z, x, left, right
 #parametres #test
 vitesse_plaquette = 12.5
 vitesse_ball = 3
-acceleration_ball = 0
+acceleration_ball = 0.3
 fps = 1/60
 initial_time = time.time()
 angle_attaque = 0.02
@@ -91,21 +91,27 @@ class Ball:
         self.rect.centery = self.y
 
     def checkwall(self):
-        if self.rect.left < self.s_rect.left and 180 < self.angle and self.angle < 270: #frappe le mur gauche venant du haut
-            self.rect.left = self.s_rect.left
+        if (self.rect.left < self.s_rect.left) and (180 < self.angle) and (self.angle < 270): #frappe le mur gauche venant du haut
+            self.x = self.s_rect.left + 5
             self.angle = self.angle - 2*self.angle
 
-        elif self.rect.left < self.s_rect.left and 270 < self.angle and self.angle < 360: #frappe le mur gauche venant du bas
-            self.rect.left = self.s_rect.left
+        elif (self.rect.left < self.s_rect.left) and (270 < self.angle) and (self.angle < 360): #frappe le mur gauche venant du bas
+            self.x = self.s_rect.left + 5
             self.angle = 360 - self.angle
 
-        elif self.rect.right > self.s_rect.right and 0 < self.angle and self.angle < 90: #frappe le mur droit venant du bas
-            self.rect.right = self.s_rect.right
+        elif (self.rect.right > self.s_rect.right) and (0 < self.angle) and (self.angle < 90): #frappe le mur droit venant du bas
+            self.x = self.s_rect.right - 5
             self.angle = 360 - self.angle
 
-        elif self.rect.right > self.s_rect.right and 90 < self.angle and self.angle < 180: #frappe le mur droit venant du haut
-            self.rect.right = self.s_rect.right
+        elif (self.rect.right > self.s_rect.right) and (90 < self.angle) and (self.angle < 180): #frappe le mur droit venant du haut
+            self.x = self.s_rect.right - 5
             self.angle = self.angle + 2*(180-self.angle)
+
+        if self.angle > 360:
+            self.angle -= 360
+
+        if self.angle < 0:
+            self.angle = 360 + self.angle
             
     def checkend (self):
         global score_bottom
@@ -121,7 +127,6 @@ class Ball:
     def check_plaquette(self):
         if (self.rect.top < plaquette_up.rect.bottom) and (abs(self.rect.centerx - plaquette_up.rect.centerx) < 41.5) and (self.rect.top > plaquette_up.rect.top):
             distance = self.rect.centerx - plaquette_up.rect.centerx
-            print("ok")
             denominateur = 2*angle_attaque*distance
             if denominateur == 0:
                 angle_board = 0
@@ -130,8 +135,6 @@ class Ball:
 
             if denominateur < 0:
                 angle_board = angle_board*-1
-
-            print(angle_board)
 
             if self.angle > 270:
                 self.angle = 540 - self.angle - angle_board
@@ -150,7 +153,6 @@ class Ball:
         elif (self.rect.bottom > plaquette_down.rect.top) and (abs(self.rect.centerx - plaquette_down.rect.centerx) < 41.5) and (
                 self.rect.bottom < plaquette_down.rect.bottom):
             distance = self.rect.centerx - plaquette_down.rect.centerx
-            print("ok")
             denominateur = 2 * -1 * angle_attaque * distance
             if denominateur == 0:
                 angle_board = 0
@@ -160,15 +162,11 @@ class Ball:
             if denominateur < 0:
                 angle_board = angle_board * -1
 
-            print(angle_board)
-
             if self.angle > 180:
                 self.angle = 540 - self.angle - angle_board
 
             elif self.angle < 180:
                 self.angle = 180 - self.angle - angle_board
-
-            print(self.angle)
 
             if self.angle >= 360:
                 self.angle -= 360
@@ -183,7 +181,6 @@ class Ball:
                 self.angle = 280
 
             self.y = plaquette_down.rect.top - 5
-            print(self.angle)
 
 
 class Plaquette:
@@ -223,9 +220,12 @@ class Plaquette:
             self.rect.right = self.s_rect.right
 
 
+
 plaquette_down = Plaquette("Plaquette.jpg", 580, 810, "bas")
 plaquette_up = Plaquette("Plaquette.jpg", 580, 90, "haut")
 ball = Ball("Balle.jpg")
+pygame.font.init()
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 while True:
     time.sleep(fps)
@@ -235,9 +235,14 @@ while True:
     ball.move()
     ball.checkwall()
     ball.check_plaquette()
-    ball.checkend
+    ball.checkend()
     screen.fill((255, 255, 255))
     plaquette_down.blit()
     plaquette_up.blit()
     ball.blit()
+    up = myfont.render(str(score_top), False, (0, 0, 0))
+    down = myfont.render(str(score_bottom), False, (0, 0, 0))
+    screen.blit(up, (50, 400))
+    screen.blit(down, (50, 500))
     pygame.display.flip()
+    print(ball.angle)
