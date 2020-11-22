@@ -224,12 +224,20 @@ plaquette_down = Plaquette("Plaquette.jpg", 580, 810, "bas")
 plaquette_up = Plaquette("Plaquette.jpg", 580, 90, "haut")
 ball = Ball("Balle.jpg")
 pygame.font.init()
-myfont = pygame.font.SysFont('Comic Sans MS', 30)
+myfont = pygame.font.SysFont('Trebuchet MS', 40)
 initial_time = time.time()
 pointiller_image = pygame.image.load("pointiller.jpg")
 pointiller_rect = pointiller_image.get_rect()
 pointiller_rect.centery = 450
 pointiller_rect.centerx = 380
+up = myfont.render(str(score_top), False, (0, 0, 0))
+down = myfont.render(str(score_bottom), False, (0, 0, 0))
+up_rect = up.get_rect()
+down_rect = down.get_rect()
+up_rect.centery = 400
+down_rect.centery = 500
+up_rect.centerx = 40
+down_rect.centerx = 40
 
 while True:
     time.sleep(fps)
@@ -247,6 +255,6 @@ while True:
     ball.blit()
     up = myfont.render(str(score_top), False, (0, 0, 0))
     down = myfont.render(str(score_bottom), False, (0, 0, 0))
-    screen.blit(up, (50, 400))
-    screen.blit(down, (50, 500))
+    screen.blit(up, up_rect)
+    screen.blit(down, down_rect)
     pygame.display.flip()
