@@ -15,7 +15,7 @@ vitesse_plaquette = 12.5
 vitesse_ball = 3
 acceleration_ball = 0.3
 fps = 1/60
-angle_attaque = 0.02
+angle_attaque = 0.03
 
 score_bottom = 0
 score_top = 0
@@ -219,9 +219,8 @@ class Plaquette:
             self.rect.right = self.s_rect.right
 
 
-
-plaquette_down = Plaquette("Plaquette.jpg", 580, 810, "bas")
-plaquette_up = Plaquette("Plaquette.jpg", 580, 90, "haut")
+plaquette_down = Plaquette("Plaquette.jpg", 380, 810, "bas")
+plaquette_up = Plaquette("Plaquette.jpg", 380, 90, "haut")
 ball = Ball("Balle.jpg")
 pygame.font.init()
 myfont = pygame.font.SysFont('Trebuchet MS', 40)
